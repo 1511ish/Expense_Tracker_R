@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <label for="amount">Choose Expenseamount:</label>
+        <input type="number" id="amount">
+        <label for="description">Choose Description:</label>
+        <input type="text" id="description">
+        <label for="options">Choose Category:</label>
+        <select id="options">
+            <option value="vacation">Vacation</option>
+            <option value="movie">Movie</option>
+            <option value="food">Food</option>
+            <option value="shoping">Shoping</option>
+            <option value="shoping">Phone</option>
+            <option value="shoping">Others</option>
+        </select>
+        <input type="button" value="Add Expense" id="add">
+    </div>
+    <ul id="lists">
+    </ul>
+
+
+    <script>
+
+        var ul = document.getElementById('lists');
+        var add = document.getElementById('add');
+
+        add.addEventListener('click', addExpense);
+        function addExpense() {
+            var li = document.createElement('li');
+            let expence_amount = document.getElementById('amount');
+            let description = document.getElementById('description');
+            let ind = document.getElementById("options").selectedIndex;
+            let category = document.getElementsByTagName("option")[ind];
+            let string = expence_amount.value + " - " + description.value + " - " + category.value + " ";
+
+            li.appendChild(document.createTextNode(string));
+            let editBtn = document.createElement('input');
+            editBtn.type = "submit";
+            editBtn.className = "edit";
+            editBtn.value = "Edit Expenses";
+            let deleteBtn = document.createElement('input');
+            deleteBtn.type = "submit";
+            deleteBtn.className = 'delete';
+            deleteBtn.value = "Delete Expenses";
+            li.appendChild(editBtn);
+            li.appendChild(deleteBtn);
+            ul.appendChild(li);
+            expence_amount.value = "";
+            description.value = "";
+        }
+
+        ul.addEventListener('click', removeExpense);
+        ul.addEventListener('click', editExpense);
+
+        function removeExpense(e) {
+            e.preventDefault();
+            if (e.target.classList.contains('delete')) {
+                var li = e.target.parentElement;
+                ul.removeChild(li);
+            }
+        }
+
+        function editExpense(e) {
+            e.preventDefault();
+            console.log("editData");
+            var amount = document.getElementById('amount');
+            var description = document.getElementById('description');
+
+            if (e.target.classList.contains('edit')) {
+                var li = e.target.parentElement;
+                var string = li.firstChild.textContent;
+                var text_arr = string.split('-');
+                amount.value = text_arr[0].trim();
+                description.value = text_arr[1];
+                ul.removeChild(li);
+            }
+        }
+
+    </script>
+</body>
+
+</html>
